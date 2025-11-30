@@ -16,10 +16,7 @@ function pctChange(current: number, prev: number) {
 
 /* ---------------------------------------- */
 
-export async function GET(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const from = searchParams.get("from");

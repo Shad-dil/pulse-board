@@ -213,7 +213,7 @@ export default function UserDetailsModal({ userId, open, onClose }: Props) {
               <TabsContent value="activity" className="mt-4">
                 <div className="max-h-64 overflow-y-auto space-y-3">
                   {activities?.length ? (
-                    activities.map((a) => (
+                    activities.map((a: any) => (
                       <div
                         key={a.id}
                         className="p-3 rounded border dark:border-neutral-700"

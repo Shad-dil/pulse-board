@@ -1,7 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-export function useUsers({ page, limit, search, role }) {
+// --- Types ---
+type UseUsersParams = {
+  page: number;
+  limit: number;
+  search?: string;
+  role?: string;
+};
+
+// --- Hooks ---
+export function useUsers({ page, limit, search, role }: UseUsersParams) {
   return useQuery({
     queryKey: ["users", page, limit, search, role],
     queryFn: async () => {
@@ -10,7 +19,7 @@ export function useUsers({ page, limit, search, role }) {
       });
       return res.data;
     },
-    keepPreviousData: true,
+    placeholderData: (prev) => prev, // 👈 React Query v5 replacement
   });
 }
 
@@ -43,9 +52,9 @@ export function useUpdateUser() {
   return useMutation({
     mutationFn: async ({ id, payload }: { id: string; payload: any }) =>
       axios.patch(`/api/users/${id}`, payload).then((r) => r.data.user),
-    onSuccess: (data, variables) => {
-      qc.invalidateQueries(["users"]);
-      qc.invalidateQueries(["user", variables.id]);
+    onSuccess: (_, vars) => {
+      qc.invalidateQueries({ queryKey: ["users"] });
+      qc.invalidateQueries({ queryKey: ["user", vars.id] });
     },
   });
 }
@@ -55,7 +64,7 @@ export function useDeleteUser() {
   return useMutation({
     mutationFn: async (id: string) =>
       axios.delete(`/api/users/${id}`).then((r) => r.data),
-    onSuccess: () => qc.invalidateQueries(["users"]),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["users"] }),
   });
 }
 
@@ -64,7 +73,7 @@ export function useRestoreUser() {
   return useMutation({
     mutationFn: async (id: string) =>
       axios.patch(`/api/users/${id}/restore`).then((r) => r.data),
-    onSuccess: () => qc.invalidateQueries(["users"]),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["users"] }),
   });
 }
 
@@ -85,6 +94,7 @@ export function useExportUsers() {
     },
   };
 }
+
 export function useUpdateSettings() {
   const qc = useQueryClient();
   return useMutation({
@@ -93,8 +103,8 @@ export function useUpdateSettings() {
         .patch(`/api/users/${id}/settings`, payload)
         .then((r) => r.data.settings),
     onSuccess: (_, vars) => {
-      qc.invalidateQueries(["user", vars.id]);
-      qc.invalidateQueries(["users"]);
+      qc.invalidateQueries({ queryKey: ["user", vars.id] });
+      qc.invalidateQueries({ queryKey: ["users"] });
     },
   });
 }

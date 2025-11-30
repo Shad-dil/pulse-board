@@ -1,14 +1,29 @@
 import axios from "axios";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-export function useInfiniteUsers({ search, role, sortBy, order, limit = 10 }) {
+type InfiniteUsersParams = {
+  search?: string;
+  role?: string;
+  sortBy?: string;
+  order?: "asc" | "desc";
+  limit?: number;
+};
+
+export function useInfiniteUsers({
+  search = "",
+  role = "ALL",
+  sortBy = "",
+  order = "asc",
+  limit = 10,
+}: InfiniteUsersParams) {
   return useInfiniteQuery({
     queryKey: ["users", { search, role, sortBy, order }],
-    queryFn: async ({ pageParam = null }) => {
+    initialPageParam: null, // ✅ Required in React Query v5
+    queryFn: async ({ pageParam }) => {
       const params = new URLSearchParams({
         limit: String(limit),
-        search: search || "",
-        role: role || "ALL",
+        search,
+        role,
         sortBy,
         order,
       });
@@ -18,6 +33,6 @@ export function useInfiniteUsers({ search, role, sortBy, order, limit = 10 }) {
       const res = await axios.get(`/api/users?${params.toString()}`);
       return res.data;
     },
-    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    getNextPageParam: (lastPage) => lastPage?.nextCursor ?? undefined,
   });
 }

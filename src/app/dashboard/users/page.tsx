@@ -47,7 +47,7 @@ export default function UsersPage() {
     if (hasNextPage) fetchNextPage();
   });
 
-  const users = data?.pages.flatMap((p) => p.users) ?? [];
+  const users = data?.pages.flatMap((p: any) => p.users) ?? [];
 
   const toggleSort = (field: string) => {
     if (sortBy === field) {

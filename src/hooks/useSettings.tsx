@@ -1,4 +1,3 @@
-// src/hooks/useSettings.ts
 import axios from "axios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -25,8 +24,8 @@ export function useUpdateProfileAndSettings() {
       return res.data;
     },
     onSuccess: () => {
-      qc.invalidateQueries(["settings", "me"]);
-      qc.invalidateQueries(["me"]);
+      qc.invalidateQueries({ queryKey: ["settings", "me"] });
+      qc.invalidateQueries({ queryKey: ["me"] });
     },
   });
 }
@@ -48,8 +47,7 @@ export function useChangePassword() {
       return res.data;
     },
     onSuccess: () => {
-      // optionally you may want to force logout or show success
-      qc.invalidateQueries(["settings", "me"]);
+      qc.invalidateQueries({ queryKey: ["settings", "me"] });
     },
   });
 }

@@ -1,17 +1,20 @@
-import { useEffect } from "react";
+import { RefObject, useEffect } from "react";
 
-export function useInfiniteScroll(ref, onBottom) {
+export function useInfiniteScroll(
+  ref: RefObject<HTMLElement | null>,
+  onBottom: () => void
+) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    function handleScroll() {
+    const handler = () => {
       if (el.scrollTop + el.clientHeight >= el.scrollHeight - 20) {
         onBottom();
       }
-    }
+    };
 
-    el.addEventListener("scroll", handleScroll);
-    return () => el.removeEventListener("scroll", handleScroll);
+    el.addEventListener("scroll", handler);
+    return () => el.removeEventListener("scroll", handler);
   }, [ref, onBottom]);
 }

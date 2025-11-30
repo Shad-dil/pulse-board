@@ -104,7 +104,7 @@ export default function DashboardHome() {
 
         <div className="space-y-6">
           {/* Funnel uses live funnel data */}
-          <Funnel funnel={funnelData} />
+          <Funnel from={from} to={to} />
 
           {/* <DashboardTable from={from} to={to} /> */}
           <DashboardActivity activity={activityData} />

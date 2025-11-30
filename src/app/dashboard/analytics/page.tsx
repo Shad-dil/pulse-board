@@ -77,11 +77,15 @@ export default function AnalyticsPage() {
   ];
 
   const chartData = {
-    labels: traffic?.length ? traffic.map((t) => t.month) : [],
+    labels: traffic?.length
+      ? traffic.map((t: { month: string }) => t.month)
+      : [],
     datasets: [
       {
         label: "User Growth",
-        data: traffic?.length ? traffic.map((t) => t.users) : [],
+        data: traffic?.length
+          ? traffic.map((t: { users: string }) => t.users)
+          : [],
         borderColor: "#4f46e5",
         borderWidth: 2,
         tension: 0.3,

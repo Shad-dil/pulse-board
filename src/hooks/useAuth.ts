@@ -1,9 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+type AuthPayload = {
+  name?: string;
+  email: string;
+  password: string;
+};
 export const useRegister = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (payload) =>
+    mutationFn: (payload: AuthPayload) =>
       axios.post("/api/auth/register", payload).then((r) => r.data),
     onSuccess: () => {
       // Invalidate the me query cache so it refetches with the new user
@@ -15,7 +20,7 @@ export const useRegister = () => {
 export const useLogin = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (payload) =>
+    mutationFn: (payload: AuthPayload) =>
       axios.post("/api/auth/login", payload).then((r) => r.data),
     onSuccess: () => {
       // Invalidate the me query cache so it refetches with the new user
