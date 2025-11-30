@@ -7,6 +7,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function LoginPage() {
+  const [productTitle, setProductTitle] = useState("Loading...");
+
+  useEffect(() => {
+    // Simulate fetching dynamic data after component mounts
+    setTimeout(() => {
+      const fetchedTitle = "PulseBoard || Login";
+      setProductTitle(fetchedTitle);
+
+      // Update the page title using the browser API
+      document.title = fetchedTitle;
+    }, 1000);
+  }, []);
   const login = useLogin();
   const router = useRouter();
   const [error, setError] = useState("");
