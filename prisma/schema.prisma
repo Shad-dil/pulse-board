@@ -1,0 +1,76 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             String      @id @default(uuid())
+  name           String
+  email          String      @unique @db.VarChar(255)
+  password       String
+  role           Role        @default(USER)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  lastLogin      DateTime?               // <-- new
+  deletedAt      DateTime?               // <-- new (soft delete)
+  activities     Activity[]
+  settings       UserSettings?
+
+  @@index([email])
+  @@index([role])
+}
+
+
+model UserSettings {
+  id                String   @id @default(uuid())
+  user              User     @relation(fields: [userId], references: [id])
+  userId            String   @unique
+  theme             String   @default("light")
+  emailNotifications Boolean @default(true)
+  weeklyReports      Boolean @default(false)
+}
+
+model Activity {
+  id        String   @id @default(uuid())
+  message   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model AnalyticsStats {
+  id        String   @id @default(uuid())
+  users     Int
+  revenue   Int
+  sessions  Int
+  conversion Float
+  createdAt DateTime @default(now())
+}
+
+model Traffic {
+  id        String   @id @default(uuid())
+  month     String
+  users     Int
+  createdAt DateTime @default(now())
+}
+
+model Funnel {
+  id              String   @id @default(uuid())
+  impressions     Int
+  visits          Int
+  addToCart       Int
+  conversions     Int
+  createdAt       DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+}
