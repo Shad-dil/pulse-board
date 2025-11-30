@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 /* ---------------- UTILS ---------------- */
 function shiftDateRange(from: Date, to: Date) {
@@ -16,7 +16,10 @@ function pctChange(current: number, prev: number) {
 
 /* ---------------------------------------- */
 
-export async function GET(req: Request) {
+export async function GET(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
     const { searchParams } = new URL(req.url);
     const from = searchParams.get("from");

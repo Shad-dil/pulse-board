@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 function toCSV(rows: any[]) {
   const cols = ["name", "email", "role", "createdAt"];
@@ -12,7 +12,7 @@ function toCSV(rows: any[]) {
   return header + body;
 }
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const page = url.searchParams.get("page") || undefined;
   const limit = url.searchParams.get("limit") || undefined;

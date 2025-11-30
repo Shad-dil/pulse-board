@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { signJwt } from "@/lib/jwt";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 // Retry helper for database operations
 async function withRetry<T>(
@@ -24,7 +24,7 @@ async function withRetry<T>(
   throw new Error("Max retries exceeded");
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
 
   try {

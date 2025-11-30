@@ -1,5 +1,5 @@
 // src/app/api/settings/route.ts
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyJwt } from "@/lib/jwt";
 import { cookies } from "next/headers";
@@ -28,7 +28,7 @@ export async function GET() {
   return NextResponse.json({ user });
 }
 
-export async function PATCH(req: Request) {
+export async function PATCH(req: NextRequest) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   if (!token)
