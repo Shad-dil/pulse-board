@@ -91,7 +91,7 @@ export default function DashboardChart({
   };
 
   return (
-    <Card>
+    <Card className="hover:dark:border hover:dark:border-green-900 cursor-pointer">
       <CardContent className="p-4">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-medium">User Growth</h3>

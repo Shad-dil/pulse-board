@@ -30,7 +30,7 @@ export default function DashboardActivity({
   }
 
   return (
-    <Card className="h-[400px] overflow-y-scroll">
+    <Card className="h-[400px] overflow-y-scroll hover:dark:border hover:dark:border-green-900 cursor-pointer">
       <CardContent className="p-4 space-y-4">
         <h3 className="font-semibold text-lg mb-2">Recent Activity</h3>
 

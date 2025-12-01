@@ -88,7 +88,7 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-6 p-6">
-      <div className="border rounded-lg p-6 dark:bg-neutral-900">
+      <div className="border rounded-lg p-6 dark:bg-neutral-900 hover:dark:border hover:dark:border-green-900">
         <h3 className="text-lg font-semibold mb-4">Profile</h3>
         <form onSubmit={handleSaveProfile} className="space-y-3">
           <div>
@@ -115,7 +115,7 @@ export default function SettingsPage() {
         </form>
       </div>
 
-      <div className="border rounded-lg p-6 dark:bg-neutral-900">
+      <div className="border rounded-lg p-6 dark:bg-neutral-900 hover:dark:border-green-900">
         <h3 className="text-lg font-semibold mb-4">Security</h3>
         <form onSubmit={handleChangePassword} className="space-y-3">
           <div>
@@ -144,7 +144,7 @@ export default function SettingsPage() {
         </form>
       </div>
 
-      <div className="border rounded-lg p-6 dark:bg-neutral-900">
+      <div className="border rounded-lg p-6 dark:bg-neutral-900 hover:dark:border-green-900">
         <h3 className="text-lg font-semibold mb-4">Preferences</h3>
 
         <div className="flex items-center justify-between mb-3">

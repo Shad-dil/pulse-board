@@ -20,7 +20,7 @@ export default function DashboardFunnel({
   };
 
   return (
-    <Card>
+    <Card className="hover:dark:border hover:dark:border-green-900 cursor-pointer">
       <CardContent className="p-4">
         <h3 className="font-medium mb-4">Funnel</h3>
 

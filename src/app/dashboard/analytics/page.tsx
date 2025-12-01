@@ -98,7 +98,7 @@ export default function AnalyticsPage() {
       <h2 className="text-2xl font-semibold">Analytics</h2>
 
       {/* DATE FILTERS */}
-      <Card>
+      <Card className="hover:dark:border hover:dark:border-green-900 cursor-pointer">
         <CardContent className="p-4 space-y-4">
           <h3 className="font-medium">Filter by Date</h3>
 
@@ -162,7 +162,10 @@ export default function AnalyticsPage() {
       {/* STATS */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {kpiCards.map((item) => (
-          <Card key={item.label}>
+          <Card
+            key={item.label}
+            className="hover:dark:border hover:dark:border-green-900 cursor-pointer"
+          >
             <CardContent className="p-4">
               <p className="text-sm text-gray-500">{item.label}</p>
               <p className="text-xl font-semibold">{item.value}</p>
@@ -172,7 +175,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* CHART */}
-      <Card>
+      <Card className="hover:dark:border hover:dark:border-green-900 cursor-pointer">
         <CardContent className="p-4">
           <h3 className="font-medium mb-4">User Growth</h3>
           <Line data={chartData} height={100} />
@@ -185,7 +188,7 @@ export default function AnalyticsPage() {
       </Card>
 
       {/* FUNNEL */}
-      <Card>
+      <Card className="hover:dark:border hover:dark:border-green-900 cursor-pointer">
         <CardContent className="p-4 space-y-3">
           <h3 className="font-medium mb-4">Funnel Metrics</h3>
           <p>Impressions: {funnel?.impressions ?? 0}</p>
@@ -196,7 +199,7 @@ export default function AnalyticsPage() {
       </Card>
 
       {/* RECENT ACTIVITY */}
-      <Card>
+      <Card className="hover:dark:border hover:dark:border-green-900 cursor-pointer">
         <CardContent className="p-4 space-y-3">
           <h3 className="font-medium mb-4">Recent Activity</h3>
           {}

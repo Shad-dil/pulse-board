@@ -179,7 +179,10 @@ export default function DashboardCards({ from, to }: Props) {
             <Skeleton key={i} className="h-28 w-full" />
           ))
         : items.map((it) => (
-            <Card key={it.key}>
+            <Card
+              key={it.key}
+              className="hover:dark:border hover:dark:border-green-900 cursor-pointer"
+            >
               <CardContent className="p-4">
                 <div className="flex justify-between items-start">
                   <div>
