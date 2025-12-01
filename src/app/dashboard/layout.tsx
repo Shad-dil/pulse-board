@@ -1,5 +1,3 @@
-"use client";
-
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -11,21 +9,19 @@ export default function DashboardLayout({
 }) {
   return (
     <ProtectedRoute>
-      <div className="h-screen w-full flex overflow-hidden">
-        {/* FIXED SIDEBAR */}
-        <aside className="fixed left-0 top-0 h-full w-64 border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 z-40">
+      <div className="flex">
+        {/* Sidebar */}
+        <aside className="md:fixed md:left-0 md:top-0 md:h-full md:w-64 md:border-r md:border-neutral-200 md:dark:border-neutral-800 md:bg-white dark:bg-neutral-900 md:z-40">
           <Sidebar />
         </aside>
 
-        {/* MAIN AREA (Shifted Right) */}
-        <div className="flex-1 flex flex-col ml-64">
-          {/* FIXED HEADER */}
-          <header className="fixed top-0 left-64 right-0 h-16 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 z-30">
+        {/* Main */}
+        <div className="flex-1 flex flex-col md:ml-64">
+          <header className="md:fixed md:top-0 md:left-64 md:right-0 md:h-16 md:border-b md:border-neutral-200 md:dark:border-neutral-800 md:bg-white dark:bg-neutral-900 md:z-30">
             <Header />
           </header>
 
-          {/* SCROLLABLE CONTENT */}
-          <main className="mt-16 h-[calc(100vh-4rem)] overflow-y-auto p-6 bg-neutral-50 dark:bg-neutral-900">
+          <main className="p-6 bg-neutral-50 dark:bg-neutral-900 min-h-screen md:mt-16 md:h-[calc(100vh-4rem)] md:overflow-y-auto ">
             {children}
           </main>
         </div>
