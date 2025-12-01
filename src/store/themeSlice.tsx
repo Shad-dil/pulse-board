@@ -7,7 +7,7 @@ interface ThemeState {
 
 const initialState: ThemeState = {
   sidebarCollapsed: false,
-  mode: "light",
+  mode: "dark",
 };
 
 const themeSlice = createSlice({

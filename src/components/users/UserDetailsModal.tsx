@@ -20,7 +20,7 @@ import {
 } from "@/hooks/useUser";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { Label } from "../ui/label";
+import { Label } from "@/components/ui/label";
 
 type Props = {
   userId: string | null;
@@ -37,24 +37,20 @@ export default function UserDetailsModal({ userId, open, onClose }: Props) {
   const restoreUser = useRestoreUser();
   const updateSettings = useUpdateSettings();
 
-  // Edit mode state
   const [edit, setEdit] = useState(false);
 
-  // Editable fields
   const [profile, setProfile] = useState({
     name: "",
     email: "",
     role: "USER",
   });
 
-  // Settings fields
   const [settings, setSettings] = useState({
     theme: "light",
     emailNotifications: true,
     weeklyReports: false,
   });
 
-  // Sync when user loads
   useEffect(() => {
     if (user) {
       setProfile({
@@ -100,180 +96,190 @@ export default function UserDetailsModal({ userId, open, onClose }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>User Details</DialogTitle>
-          <DialogDescription>
-            Manage profile, activity logs & settings
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent
+        className="
+          w-full 
+          max-w-full 
+          sm:max-w-md 
+          lg:max-w-2xl 
+          p-0 
+          rounded-lg
+        "
+      >
+        <div
+          className="
+            max-h-[75vh]
+            overflow-y-auto
+            p-6
+          "
+        >
+          <DialogHeader>
+            <DialogTitle>User Details</DialogTitle>
+            <DialogDescription>
+              Manage profile, activity logs & settings
+            </DialogDescription>
+          </DialogHeader>
 
-        {isLoading ? (
-          <p className="text-center py-6">Loading user...</p>
-        ) : !user ? (
-          <p className="text-center py-6 text-red-500">
-            User not found or deleted.
-          </p>
-        ) : (
-          <div className="mt-4">
-            {/* TABS */}
-            <Tabs defaultValue="profile" className="w-full">
-              <TabsList className="grid grid-cols-3 w-full">
-                <TabsTrigger value="profile">Profile</TabsTrigger>
-                <TabsTrigger value="activity">Activity</TabsTrigger>
-                <TabsTrigger value="settings">Settings</TabsTrigger>
-              </TabsList>
+          {isLoading ? (
+            <p className="text-center py-6">Loading user...</p>
+          ) : !user ? (
+            <p className="text-center py-6 text-red-500">
+              User not found or deleted.
+            </p>
+          ) : (
+            <div className="mt-4">
+              {/* TABS */}
+              <Tabs defaultValue="profile" className="w-full">
+                <TabsList className="grid grid-cols-3 w-full sticky top-0">
+                  <TabsTrigger value="profile">Profile</TabsTrigger>
+                  <TabsTrigger value="activity">Activity</TabsTrigger>
+                  <TabsTrigger value="settings">Settings</TabsTrigger>
+                </TabsList>
 
-              {/* PROFILE TAB */}
-              <TabsContent value="profile" className="mt-4">
-                {!edit ? (
-                  <div className="space-y-3">
-                    <p>
-                      <strong>Name:</strong> {user.name}
-                    </p>
-                    <p>
-                      <strong>Email:</strong> {user.email}
-                    </p>
-                    <p>
-                      <strong>Role:</strong> {user.role}
-                    </p>
-                    <p>
-                      <strong>Joined:</strong>{" "}
-                      {new Date(user.createdAt).toLocaleString()}
-                    </p>
-                    <p>
-                      <strong>Last Login:</strong>{" "}
-                      {user.lastLogin
-                        ? new Date(user.lastLogin).toLocaleString()
-                        : "Never"}
-                    </p>
+                {/* PROFILE */}
+                <TabsContent value="profile" className="mt-4 space-y-4">
+                  {!edit ? (
+                    <div className="space-y-3">
+                      <p>
+                        <strong>Name:</strong> {user.name}
+                      </p>
+                      <p>
+                        <strong>Email:</strong> {user.email}
+                      </p>
+                      <p>
+                        <strong>Role:</strong> {user.role}
+                      </p>
+                      <p>
+                        <strong>Joined:</strong>{" "}
+                        {new Date(user.createdAt).toLocaleString()}
+                      </p>
+                      <p>
+                        <strong>Last Login:</strong>{" "}
+                        {user.lastLogin
+                          ? new Date(user.lastLogin).toLocaleString()
+                          : "Never"}
+                      </p>
 
-                    <Button
-                      className="mt-3"
-                      variant="default"
-                      onClick={() => setEdit(true)}
-                    >
-                      Edit Profile
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    <Input
-                      value={profile.name}
-                      onChange={(e) =>
-                        setProfile({ ...profile, name: e.target.value })
-                      }
-                      placeholder="Full Name"
-                    />
-
-                    <Input
-                      value={profile.email}
-                      onChange={(e) =>
-                        setProfile({ ...profile, email: e.target.value })
-                      }
-                      placeholder="Email"
-                    />
-
-                    <select
-                      className="border p-2 rounded dark:bg-neutral-900"
-                      value={profile.role}
-                      onChange={(e) =>
-                        setProfile({ ...profile, role: e.target.value })
-                      }
-                    >
-                      <option value="USER">User</option>
-                      <option value="ADMIN">Admin</option>
-                      <option value="MODERATOR">Moderator</option>
-                    </select>
-
-                    <div className="flex gap-2">
-                      <Button onClick={handleSaveProfile}>Save</Button>
-                      <Button variant="outline" onClick={() => setEdit(false)}>
-                        Cancel
+                      <Button className="mt-3" onClick={() => setEdit(true)}>
+                        Edit Profile
                       </Button>
                     </div>
-                  </div>
-                )}
-
-                {/* SOFT DELETE / RESTORE */}
-                <div className="mt-6 pt-4 border-t">
-                  {user.deletedAt ? (
-                    <Button variant="default" onClick={handleRestore}>
-                      Restore User
-                    </Button>
                   ) : (
-                    <Button variant="destructive" onClick={handleDelete}>
-                      Delete User
-                    </Button>
-                  )}
-                </div>
-              </TabsContent>
+                    <div className="space-y-3">
+                      <Input
+                        value={profile.name}
+                        onChange={(e) =>
+                          setProfile({ ...profile, name: e.target.value })
+                        }
+                        placeholder="Full Name"
+                      />
 
-              {/* ACTIVITY TAB */}
-              <TabsContent value="activity" className="mt-4">
-                <div className="max-h-64 overflow-y-auto space-y-3">
-                  {activities?.length ? (
-                    activities.map((a: any) => (
-                      <div
-                        key={a.id}
-                        className="p-3 rounded border dark:border-neutral-700"
+                      <Input
+                        value={profile.email}
+                        onChange={(e) =>
+                          setProfile({ ...profile, email: e.target.value })
+                        }
+                        placeholder="Email"
+                      />
+
+                      <select
+                        className="border p-2 rounded dark:bg-neutral-900 w-full"
+                        value={profile.role}
+                        onChange={(e) =>
+                          setProfile({ ...profile, role: e.target.value })
+                        }
                       >
-                        <p>{a.message}</p>
-                        <p className="text-sm text-gray-500">
-                          {new Date(a.createdAt).toLocaleString()}
-                        </p>
+                        <option value="USER">User</option>
+                        <option value="ADMIN">Admin</option>
+                        <option value="MODERATOR">Moderator</option>
+                      </select>
+
+                      <div className="flex gap-2">
+                        <Button onClick={handleSaveProfile}>Save</Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => setEdit(false)}
+                        >
+                          Cancel
+                        </Button>
                       </div>
-                    ))
-                  ) : (
-                    <p className="text-gray-500">No activity found.</p>
+                    </div>
                   )}
-                </div>
-              </TabsContent>
 
-              {/* SETTINGS TAB */}
-              <TabsContent value="settings" className="mt-4 space-y-4">
-                {/* THEME */}
-                <div className="flex items-center justify-between">
-                  <Label>Theme</Label>
-                  <select
-                    className="border p-2 rounded dark:bg-neutral-900"
-                    value={settings.theme}
-                    onChange={(e) =>
-                      setSettings({ ...settings, theme: e.target.value })
-                    }
-                  >
-                    <option value="light">Light</option>
-                    <option value="dark">Dark</option>
-                  </select>
-                </div>
+                  <div className="mt-6 pt-4 border-t">
+                    {user.deletedAt ? (
+                      <Button onClick={handleRestore}>Restore User</Button>
+                    ) : (
+                      <Button variant="destructive" onClick={handleDelete}>
+                        Delete User
+                      </Button>
+                    )}
+                  </div>
+                </TabsContent>
 
-                {/* EMAIL NOTIFICATIONS */}
-                <div className="flex items-center justify-between">
-                  <Label>Email Notifications</Label>
-                  <Switch
-                    checked={settings.emailNotifications}
-                    onCheckedChange={(v) =>
-                      setSettings({ ...settings, emailNotifications: v })
-                    }
-                  />
-                </div>
+                {/* ACTIVITY */}
+                <TabsContent value="activity" className="mt-4">
+                  <div className="max-h-64 overflow-y-auto space-y-3">
+                    {activities?.length ? (
+                      activities.map((a: any) => (
+                        <div
+                          key={a.id}
+                          className="p-3 border rounded dark:border-neutral-700"
+                        >
+                          <p>{a.message}</p>
+                          <p className="text-sm text-gray-500">
+                            {new Date(a.createdAt).toLocaleString()}
+                          </p>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-gray-500">No activity found.</p>
+                    )}
+                  </div>
+                </TabsContent>
 
-                {/* WEEKLY REPORTS */}
-                <div className="flex items-center justify-between">
-                  <Label>Weekly Reports</Label>
-                  <Switch
-                    checked={settings.weeklyReports}
-                    onCheckedChange={(v) =>
-                      setSettings({ ...settings, weeklyReports: v })
-                    }
-                  />
-                </div>
+                {/* SETTINGS */}
+                <TabsContent value="settings" className="mt-4 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <Label>Theme</Label>
+                    <select
+                      className="border p-2 rounded dark:bg-neutral-900"
+                      value={settings.theme}
+                      onChange={(e) =>
+                        setSettings({ ...settings, theme: e.target.value })
+                      }
+                    >
+                      <option value="light">Light</option>
+                      <option value="dark">Dark</option>
+                    </select>
+                  </div>
 
-                <Button onClick={handleSaveSettings}>Save Settings</Button>
-              </TabsContent>
-            </Tabs>
-          </div>
-        )}
+                  <div className="flex items-center justify-between">
+                    <Label>Email Notifications</Label>
+                    <Switch
+                      checked={settings.emailNotifications}
+                      onCheckedChange={(v) =>
+                        setSettings({ ...settings, emailNotifications: v })
+                      }
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <Label>Weekly Reports</Label>
+                    <Switch
+                      checked={settings.weeklyReports}
+                      onCheckedChange={(v) =>
+                        setSettings({ ...settings, weeklyReports: v })
+                      }
+                    />
+                  </div>
+
+                  <Button onClick={handleSaveSettings}>Save Settings</Button>
+                </TabsContent>
+              </Tabs>
+            </div>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );
