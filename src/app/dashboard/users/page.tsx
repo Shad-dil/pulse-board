@@ -59,7 +59,13 @@ export default function UsersPage() {
 
   return (
     <div className="space-y-6 w-full">
-      <h2 className="text-2xl font-semibold">Users</h2>
+      <h2 className="text-2xl font-semibold">
+        Users
+        <br />
+        <span className="text-sm text-gray-400">
+          Click on any row to edit the user
+        </span>
+      </h2>
 
       {/* ⬆️ SEARCH + FILTER + EXPORT */}
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 w-full">
