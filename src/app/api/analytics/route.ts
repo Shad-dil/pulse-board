@@ -25,15 +25,15 @@ export async function GET(req: NextRequest) {
     const fromDate = from ? new Date(from) : new Date("2023-01-01");
     const toDate = to ? new Date(to) : new Date();
 
-    /* 1️⃣ Calculate previous period window */
+    /* 1️ Calculate previous period window */
     const { prevFrom, prevTo } = shiftDateRange(fromDate, toDate);
 
-    /* 2️⃣ TRAFFIC */
+    /* 2️ TRAFFIC */
     const traffic = await prisma.traffic.findMany({
       orderBy: { month: "asc" },
     });
 
-    /* 3️⃣ CURRENT ANALYTICS SNAPSHOTS */
+    /* 3️ CURRENT ANALYTICS SNAPSHOTS */
     const stats = await prisma.analyticsStats.findMany({
       where: {
         createdAt: { gte: fromDate, lte: toDate },
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: "asc" },
     });
 
-    /* 4️⃣ PREVIOUS PERIOD SNAPSHOTS */
+    /* 4️ PREVIOUS PERIOD SNAPSHOTS */
     const statsPrev = await prisma.analyticsStats.findMany({
       where: {
         createdAt: { gte: prevFrom, lte: prevTo },
@@ -49,20 +49,20 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: "asc" },
     });
 
-    /* 5️⃣ FUNNEL */
+    /* 5️ FUNNEL */
     const funnel = await prisma.funnel.findFirst();
 
-    /* 6️⃣ ACTIVITY */
+    /* 6️ ACTIVITY */
     const activity = await prisma.activity.findMany({
       take: 10,
       orderBy: { createdAt: "desc" },
       include: { user: true },
     });
 
-    /* 7️⃣ USERS */
+    /* 7️ USERS */
     const totalUsers = await prisma.user.count();
 
-    /* 8️⃣ DAU */
+    /* 8️ DAU */
     const dau = await prisma.activity.groupBy({
       by: ["userId"],
       where: {
@@ -72,7 +72,7 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    /* 9️⃣ MAU */
+    /* 9️ MAU */
     const mau = await prisma.activity.groupBy({
       by: ["userId"],
       where: {
@@ -82,16 +82,16 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    /* 🔟 CHURN */
+    /* 10 CHURN */
     const churn = mau.length
       ? ((totalUsers - mau.length) / totalUsers) * 100
       : 0;
 
-    /* 11️⃣ ARPU */
+    /* 11️ ARPU */
     const totalRevenue = stats.reduce((a, b) => a + Number(b.revenue), 0);
     const arpu = totalUsers ? totalRevenue / totalUsers : 0;
 
-    /* 12️⃣ PREVIOUS PERIOD STATS CALC */
+    /* 12️ PREVIOUS PERIOD STATS CALC */
     const prevRevenue = statsPrev.reduce((a, b) => a + Number(b.revenue), 0);
     const prevSessions = statsPrev.reduce((a, b) => a + Number(b.sessions), 0);
     const prevConv = statsPrev.reduce((a, b) => a + Number(b.conversion), 0);
@@ -99,7 +99,7 @@ export async function GET(req: NextRequest) {
 
     const prevArpu = totalUsers > 0 ? prevRevenue / totalUsers : 0;
 
-    /* 13️⃣ DELTA PERCENTAGE VALUES */
+    /* 13️ DELTA PERCENTAGE VALUES */
     const delta = {
       users: pctChange(stats.length ? stats.at(-1)!.users : 0, prevUsers),
       revenue: pctChange(totalRevenue, prevRevenue),
@@ -117,7 +117,7 @@ export async function GET(req: NextRequest) {
       churn: pctChange(churn, churn), // fake
     };
 
-    /* 14️⃣ MULTI-SERIES CHART DATA */
+    /* 14️ MULTI-SERIES CHART DATA */
     const chartSeries = {
       labels: stats.map((s) => s.createdAt.toISOString().split("T")[0]),
       users: traffic.map((t) => t.users),
@@ -125,7 +125,7 @@ export async function GET(req: NextRequest) {
       sessions: stats.map((s) => s.sessions),
     };
 
-    /* 15️⃣ FINAL PAYLOAD */
+    /* 15 FINAL PAYLOAD */
     return NextResponse.json({
       stats,
       statsPrev,

@@ -21,6 +21,7 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { toast } from "react-toastify";
 
 type Props = {
   userId: string | null;
@@ -85,6 +86,7 @@ export default function UserDetailsModal({ userId, open, onClose }: Props) {
   const handleDelete = async () => {
     if (!userId) return;
     await deleteUser.mutateAsync(userId);
+    toast.success(`${user.name} is Deleted Successfully`);
     onClose();
   };
 

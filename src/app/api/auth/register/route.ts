@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     // 3. Create user (with retry)
     const user = await withRetry(() =>
       prisma.user.create({
-        data: { name, email, password: hashed },
+        data: { name, email, password: hashed, role: "USER" },
       })
     );
 

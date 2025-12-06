@@ -20,6 +20,7 @@ export default function LoginPage() {
     register,
     handleSubmit: loginFormSubmit,
     formState,
+    setValue,
   } = useForm({
     resolver: zodResolver(loginSchema),
   });
@@ -61,6 +62,14 @@ export default function LoginPage() {
     return null;
   }
 
+  const handleDemoAdminLogin = () => {
+    setValue("email", "ttest@gmail.com");
+    setValue("password", "Test123");
+  };
+  const handleDemoLogin = () => {
+    setValue("email", "dilshad@gmail.com");
+    setValue("password", "Dilshad123");
+  };
   async function handleSubmit(data: { email: string; password: string }) {
     // e.preventDefault();
     // setError("");
@@ -79,45 +88,63 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      <form
-        onSubmit={loginFormSubmit(handleSubmit)}
-        className="w-full max-w-md p-6 border rounded-lg dark:bg-neutral-900 space-y-4"
-      >
-        <h2 className="text-2xl font-semibold">Login</h2>
+      <div>
+        <form
+          onSubmit={loginFormSubmit(handleSubmit)}
+          className="w-full max-w-md p-6 border rounded-lg dark:bg-neutral-900 space-y-4"
+        >
+          <h2 className="text-2xl font-semibold">Login</h2>
 
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
 
-        <Input
-          placeholder="Email Address"
-          type="email"
-          {...register("email")}
-        />
-        {errors.email && (
-          <span className="text-sm text-red-300">
-            {errors.email?.message || "email is required"}{" "}
-          </span>
-        )}
-        <Input
-          placeholder="Password"
-          type="password"
-          {...register("password")}
-        />
-        {errors.password && (
-          <span className="text-sm text-red-300">
-            {errors.password?.message}
-          </span>
-        )}
-        <Button type="submit" className="w-full" disabled={login.isPending}>
-          {login.isPending ? "Signing in..." : "Login"}
-        </Button>
+          <Input
+            placeholder="Email Address"
+            type="email"
+            {...register("email")}
+          />
+          {errors.email && (
+            <span className="text-sm text-red-300">
+              {errors.email?.message || "email is required"}{" "}
+            </span>
+          )}
+          <Input
+            placeholder="Password"
+            type="password"
+            {...register("password")}
+          />
+          {errors.password && (
+            <span className="text-sm text-red-300">
+              {errors.password?.message}
+            </span>
+          )}
+          <Button type="submit" className="w-full" disabled={login.isPending}>
+            {login.isPending ? "Signing in..." : "Login"}
+          </Button>
 
-        <p className="text-center text-sm text-gray-500">
-          Don’t have an account?{" "}
-          <a href="/register" className="text-blue-600">
-            Create Account
+          <p className="text-center text-sm text-gray-500">
+            Don’t have an account?{" "}
+            <a href="/register" className="text-blue-600">
+              Create Account
+            </a>
+          </p>
+        </form>
+        <div className="flex justify-between gap-2">
+          <a
+            type="button"
+            className="text-sm dark:text-gray-500 cursor-pointer hover:underline "
+            onClick={handleDemoAdminLogin}
+          >
+            {"Demo Admin Login"}
           </a>
-        </p>
-      </form>
+          <a
+            type="button"
+            className="text-sm dark:text-gray-500 cursor-pointer hover:underline "
+            onClick={handleDemoLogin}
+          >
+            {"Demo User Login"}
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

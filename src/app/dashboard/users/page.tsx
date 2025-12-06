@@ -8,9 +8,14 @@ import { useExportUsers } from "@/hooks/useExportUser";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import UserDetailsModal from "@/components/users/UserDetailsModal";
+import { useMe } from "@/hooks/useAuth";
+import { toast } from "react-toastify";
+import AddUseModel from "@/components/users/AddUserModel";
 
 export default function UsersPage() {
   const [productTitle, setProductTitle] = useState("Loading...");
+  const [showAddUser, setShowAddUser] = useState(false);
+  const { data: currentUser } = useMe();
 
   useEffect(() => {
     document.title = "PulseBoard || Users";
@@ -88,12 +93,26 @@ export default function UsersPage() {
             <option value="MODERATOR">Moderator</option>
           </select>
 
-          <Button
-            onClick={() => exporter.exportCSV({ search, role, sortBy, order })}
-            className="whitespace-nowrap"
-          >
-            Export CSV
-          </Button>
+          {(currentUser?.role === "ADMIN" ||
+            currentUser?.role === "MODERATOR") && (
+            <Button
+              onClick={() =>
+                exporter.exportCSV({ search, role, sortBy, order })
+              }
+              className="whitespace-nowrap cursor-pointer"
+            >
+              Export CSV
+            </Button>
+          )}
+          {currentUser?.role === "ADMIN" && (
+            <Button
+              onClick={() => setShowAddUser(true)}
+              variant={"destructive"}
+              className="whitespace-nowrap cursor-pointer"
+            >
+              Add User
+            </Button>
+          )}
         </div>
       </div>
 
@@ -152,7 +171,13 @@ export default function UsersPage() {
               {users.map((u) => (
                 <tr
                   key={u.id}
-                  onClick={() => setSelectedUserId(u.id)}
+                  onClick={() => {
+                    if (currentUser?.role === "ADMIN") {
+                      setSelectedUserId(u.id);
+                    } else {
+                      toast.error("You are not Authorized ");
+                    }
+                  }}
                   className="
                     border-t dark:border-neutral-700 
                     hover:bg-gray-50 dark:hover:bg-neutral-800 
@@ -189,6 +214,11 @@ export default function UsersPage() {
         userId={selectedUserId}
         open={!!selectedUserId}
         onClose={() => setSelectedUserId(null)}
+      />
+      <AddUseModel
+        userId={selectedUserId}
+        open={!!showAddUser}
+        onClose={() => setShowAddUser(false)}
       />
     </div>
   );

@@ -7,7 +7,14 @@ export async function GET(
 ) {
   const { id } = await context.params;
   const take = Number(new URL(req.url).searchParams.get("take") || 10);
-
+  const currentUser = await prisma.user.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  if (currentUser?.role === "ADMIN") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
   const activities = await prisma.activity.findMany({
     where: { userId: id },
     orderBy: { createdAt: "desc" },

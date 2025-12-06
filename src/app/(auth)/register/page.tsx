@@ -23,16 +23,16 @@ const registerSchema = z
   .object({
     name: z
       .string()
-      .min(2, { message: "minimum 2 charecter " })
-      .max(20, { message: "maximum 20 charecter" }),
-    email: z.string().email({ message: "email is required" }),
+      .min(2, { message: "Minimum 2 charecter " })
+      .max(20, { message: "Maximum 20 charecter" }),
+    email: z.string().email({ message: "Email is required" }),
     password: userPasswordSchema,
     confirmPassword: z
       .string()
       .min(6, { message: "Password must be at least 6 characters long" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "confirm Password didnt match with password",
+    message: "Confirm Password didnt match with password",
     path: ["confirmPassword"],
   });
 

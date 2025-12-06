@@ -43,5 +43,24 @@ export const useLogout = () => {
 export const useMe = () =>
   useQuery({
     queryKey: ["me"],
-    queryFn: () => axios.get("/api/auth/me").then((r) => r.data.user),
+    queryFn: async () => {
+      const res = await axios.get("/api/auth/me", {
+        withCredentials: true,
+      });
+      return res.data.user; // <-- return only the actual user
+    },
   });
+
+export const useAddUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["add"],
+    mutationFn: async (payload: AuthPayload) => {
+      const res = await axios.post("/api/users", payload);
+      return res.data.newUser;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+};

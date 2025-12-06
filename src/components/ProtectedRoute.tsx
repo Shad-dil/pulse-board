@@ -2,11 +2,14 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useMe } from "@/hooks/useAuth";
+import Unauthorized from "./Unautorize";
 
 export default function ProtectedRoute({
   children,
+  allowedRoles = ["USER", "ADMIN", "MODERATOR"],
 }: {
   children: React.ReactNode;
+  allowedRoles: string[];
 }) {
   const router = useRouter();
   const redirectedRef = useRef(false);
@@ -14,6 +17,7 @@ export default function ProtectedRoute({
 
   // Check if user is authenticated via server
   const { data: user, isLoading, error } = useMe();
+  console.log(user);
 
   useEffect(() => {
     setIsClient(true);
@@ -37,7 +41,10 @@ export default function ProtectedRoute({
       </div>
     );
   }
-
+  if (!allowedRoles.includes(user?.role)) {
+    // Create a simple page
+    return <Unauthorized />;
+  }
   // If there's an error or no user, don't render children
   if (error || !user) {
     return null;

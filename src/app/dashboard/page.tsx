@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { fmtDateShort } from "@/lib/format";
 import DashboardActivity from "@/components/dashboard/DashboardActivity";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 function fmtDate(d: Date) {
   return d.toISOString().slice(0, 10);
@@ -107,7 +108,9 @@ export default function DashboardHome() {
           <Funnel from={from} to={to} />
 
           {/* <DashboardTable from={from} to={to} /> */}
-          <DashboardActivity activity={activityData} />
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <DashboardActivity activity={activityData} />
+          </ProtectedRoute>
         </div>
       </div>
 

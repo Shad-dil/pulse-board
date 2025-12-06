@@ -7,7 +7,14 @@ export async function PATCH(
 ) {
   const { id } = await context.params;
   const body = await req.json();
-
+  const currentUser = await prisma.user.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  if (currentUser?.role === "ADMIN") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
   const settings = await prisma.userSettings.upsert({
     where: { userId: id },
     create: { userId: id, ...body },

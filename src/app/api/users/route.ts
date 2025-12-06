@@ -1,4 +1,7 @@
 import { prisma } from "@/lib/prisma";
+import bcrypt from "bcryptjs";
+import { error } from "console";
+import { maxTime } from "date-fns/constants";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -42,4 +45,68 @@ export async function GET(req: NextRequest) {
     users,
     nextCursor,
   });
+}
+
+async function retry<T>(
+  task: () => Promise<T>,
+  maxTry = 3,
+  delay = 2000
+): Promise<T> {
+  for (let i = 0; i < maxTry; i++) {
+    try {
+      return await task();
+    } catch (err) {
+      if (i === maxTry - 1) throw err;
+
+      await new Promise((res) =>
+        setTimeout(() => res(null), delay * Math.pow(2, i))
+      );
+    }
+  }
+  throw new Error("Max retries exceeded");
+}
+export async function POST(req: Request) {
+  const { name, email, password, role } = await req.json();
+  try {
+    const exist = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (exist) {
+      return NextResponse.json(
+        {
+          error: "This Email is already added",
+        },
+        {
+          status: 409,
+        }
+      );
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await retry(() =>
+      prisma.user.create({
+        data: {
+          name,
+          email,
+          password: hashedPassword,
+          role,
+        },
+      })
+    );
+    return NextResponse.json({
+      newUser: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+      },
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message || "Not Able to Add User " },
+      { status: 500 }
+    );
+  }
 }

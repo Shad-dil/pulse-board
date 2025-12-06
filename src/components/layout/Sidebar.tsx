@@ -6,10 +6,12 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { MoveLeftIcon, MoveRightIcon } from "lucide-react";
+import { useMe } from "@/hooks/useAuth";
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const { data: user } = useMe();
 
   useEffect(() => {
     setIsClient(true);
@@ -52,19 +54,21 @@ export default function Sidebar() {
 
       {/* Menu Items */}
       <nav className="mt-4 space-y-2 px-3">
-        {sidebarItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              "flex items-center gap-3 p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800",
-              collapsed && "justify-center"
-            )}
-          >
-            <item.icon className="h-5 w-5" />
-            {!collapsed && <span>{item.name}</span>}
-          </Link>
-        ))}
+        {sidebarItems
+          .filter((item) => item.roles.includes(user?.role))
+          .map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "flex items-center gap-3 p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800",
+                collapsed && "justify-center"
+              )}
+            >
+              <item.icon className="h-5 w-5" />
+              {!collapsed && <span>{item.name}</span>}
+            </Link>
+          ))}
       </nav>
     </aside>
   );
