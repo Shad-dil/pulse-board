@@ -74,7 +74,7 @@ export default function ActivityPage() {
                   </td>
                 </tr>
               ))
-            : activities.map((a) => (
+            : activities.map((a: any) => (
                 <tr key={a.id} className="border-b">
                   <td className="p-3">{a.user.email}</td>
 
