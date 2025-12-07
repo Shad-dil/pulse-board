@@ -40,7 +40,7 @@ export default function Sidebar() {
           DASHBOARD
         </h1>
 
-        <button
+        {/* <button
           className="p-2 rounded hover:bg-neutral-100 dark:hover:bg-neutral-800"
           onClick={toggleCollapsed}
         >
@@ -49,7 +49,7 @@ export default function Sidebar() {
           ) : (
             <MoveLeftIcon className="h-6 w-6" />
           )}
-        </button>
+        </button> */}
       </div>
 
       {/* Menu Items */}

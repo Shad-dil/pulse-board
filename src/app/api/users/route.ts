@@ -1,3 +1,5 @@
+import { logActivity } from "@/lib/activity";
+import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { error } from "console";
@@ -95,6 +97,13 @@ export async function POST(req: Request) {
         },
       })
     );
+    //Logging the Activity
+    const currentUser = await getCurrentUser();
+    await logActivity({
+      userId: currentUser?.id,
+      message: `Added User: ${newUser.email}`,
+    });
+
     return NextResponse.json({
       newUser: {
         id: newUser.id,

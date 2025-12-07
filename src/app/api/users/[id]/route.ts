@@ -1,3 +1,5 @@
+import { logActivity } from "@/lib/activity";
+import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -43,7 +45,11 @@ export async function PATCH(
     data,
     select: { id: true, name: true, email: true, role: true, updatedAt: true },
   });
-
+  const currentUser = await getCurrentUser();
+  await logActivity({
+    userId: currentUser?.id,
+    message: `Changed Role of ${user.email} to ${user.role}`,
+  });
   return NextResponse.json({ user });
 }
 
@@ -54,9 +60,14 @@ export async function DELETE(
   const { id } = await context.params;
 
   // Soft delete: set deletedAt
-  await prisma.user.update({
+  const user = await prisma.user.update({
     where: { id },
     data: { deletedAt: new Date() },
+  });
+  const currentUser = await getCurrentUser();
+  await logActivity({
+    userId: currentUser?.id,
+    message: `Deleted ${user.email}`,
   });
 
   return NextResponse.json({ ok: true });

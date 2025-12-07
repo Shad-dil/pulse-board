@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import DashboardCards from "@/components/dashboard/DashboardCards";
 import DashboardChart from "@/components/dashboard/DashboardCharts";
-import DashboardTable from "@/components/dashboard/DashboardTable";
+// import DashboardTable from "@/components/dashboard/DashboardTable";
 import Funnel from "@/components/dashboard/Funnel";
 import { Button } from "@/components/ui/button";
 import { fmtDateShort } from "@/lib/format";

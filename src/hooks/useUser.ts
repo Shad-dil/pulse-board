@@ -64,7 +64,10 @@ export function useDeleteUser() {
   return useMutation({
     mutationFn: async (id: string) =>
       axios.delete(`/api/users/${id}`).then((r) => r.data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["users"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["users"] });
+      qc.invalidateQueries({ queryKey: ["activity"] });
+    },
   });
 }
 
@@ -105,6 +108,7 @@ export function useUpdateSettings() {
     onSuccess: (_, vars) => {
       qc.invalidateQueries({ queryKey: ["user", vars.id] });
       qc.invalidateQueries({ queryKey: ["users"] });
+      qc.invalidateQueries({ queryKey: ["activity"] });
     },
   });
 }

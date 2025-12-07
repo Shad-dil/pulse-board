@@ -3,6 +3,7 @@ import { signJwt } from "@/lib/jwt";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
+import { logActivity } from "@/lib/activity";
 
 // Retry helper for database operations
 async function withRetry<T>(
@@ -48,7 +49,10 @@ export async function POST(req: Request) {
         data: { name, email, password: hashed, role: "USER" },
       })
     );
-
+    await logActivity({
+      userId: user.id,
+      message: `New is registered: ${email}`,
+    });
     // 4. Generate JWT
     const token = signJwt({ id: user.id, email: user.email });
 
