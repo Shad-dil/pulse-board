@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 PulseBoard — Full-Stack SaaS Analytics Dashboard  
+Built with **Next.js 16.0.7, TypeScript, Prisma, PostgreSQL, React Query, JWT Auth, and Real-Time Charts**
 
-## Getting Started
+PulseBoard is a production-style SaaS dashboard designed to showcase real-world full-stack engineering skills.  
+It includes secure email-password authentication, analytics, CRUD modules, charts, database modeling, API routes, React Query data fetching, and a scalable Next.js architecture suitable for professional SaaS applications.
 
-First, run the development server:
+Live Demo → https://pulse-board-dash.vercel.app
 
+---
+
+## 🌟 Features
+
+### 🔐 Authentication (Email/Password)
+- Custom credentials-based login  
+- Secure password hashing  
+- Protected routes  
+- Role-based access ready (Admin/User structure)
+
+### 📊 Analytics & Metrics
+- Dashboard with charts  
+- Traffic overview  
+- User activity logs  
+- Conversion analytics  
+- Real-time UI updates using React Query
+
+### ⚙️ Backend & Full-Stack Features
+- **Next.js Route Handlers** for backend APIs  
+- Data fetching/mutations using **React Query**  
+- CRUD operations for dashboard modules  
+- Server-side input validation  
+- Clean separation of concerns  
+
+### 🗄 Database & Persistence
+- Prisma ORM + PostgreSQL  
+- Relational schema with scalable structure  
+- Seed scripts & migrations  
+
+### ⚡ Performance Enhancements
+- React Query caching & stale-time optimization  
+- API response caching strategies  
+- Debounced queries for smoother UX  
+- SSR + CSR hybrid rendering  
+
+### 🎨 UI/UX
+- Clean dashboard layout  
+- Built with Tailwind CSS + ShadCN UI  
+- Reusable, composable components  
+- Fully responsive  
+
+---
+
+## 🧱 Tech Stack
+
+### **Frontend**
+- Next.js 14 (App Router)
+- React  
+- TypeScript  
+- Tailwind CSS  
+- ShadCN UI  
+- React Query  
+
+### **Backend**
+- Next.js API Route Handlers  
+- Prisma ORM  
+- PostgreSQL  
+
+### **Other**
+- Vercel Deployment  
+- ESLint + Prettier  
+- Environment variables  
+
+---
+
+## ⚙️ Getting Started
+
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/<your-username>/pulseboard.git
+cd pulseboard
+```
+### 2️⃣ install Dependency
+```bash
+npm install
+```
+3️⃣ Create .env
+```bash
+DATABASE_URL="your_postgres_url"
+JWT_TOKEN="your_secret_key"
+NEXT_PUBLIC_BASE_URL="http://localhost:3000"
+```
+4️⃣ Setup Prisma
+```bash
+npx prisma generate
+npx prisma db push
+```
+5️⃣ Start development server
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
