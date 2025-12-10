@@ -97,6 +97,17 @@ npx prisma db push
 ```bash
 npm run dev
 ```
+Screen Shots
+
+<img width="1889" height="901" alt="image" src="https://github.com/user-attachments/assets/b00fbc93-4d9b-4e49-a8be-8ec59f459c76" />
+<img width="1890" height="905" alt="Image" src="https://github.com/user-attachments/assets/9357e8b7-cba1-400d-a24f-3116a732ce4a" />
+
+<img width="1877" height="895" alt="Image" src="https://github.com/user-attachments/assets/cdd2f944-608b-45f2-8f6d-f0de03fc1990" />
+
+<img width="1883" height="910" alt="Image" src="https://github.com/user-attachments/assets/25eb2c5e-0ec4-4495-97e1-028c92e710f4" />
+
+<img width="1889" height="901" alt="Image" src="https://github.com/user-attachments/assets/bddb7b74-f242-49d3-8845-b8ecc2a45632" />
+
 
 
 
