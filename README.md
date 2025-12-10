@@ -52,12 +52,13 @@ Live Demo → https://pulse-board-dash.vercel.app
 ## 🧱 Tech Stack
 
 ### **Frontend**
-- Next.js 14 (App Router)
-- React  
+- Next.js 16 (App Router)
+- React
+- React Query
 - TypeScript  
 - Tailwind CSS  
 - ShadCN UI  
-- React Query  
+  
 
 ### **Backend**
 - Next.js API Route Handlers  
