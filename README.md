@@ -1,6 +1,15 @@
 # 🚀 PulseBoard — Full-Stack SaaS Analytics Dashboard  
 Built with **Next.js 16.0.7, TypeScript, Prisma, PostgreSQL, React Query, JWT Auth, and Real-Time Charts**
 
+
+![Next.js](https://img.shields.io/badge/Next.js-14-black)
+![React](https://img.shields.io/badge/React-Query-blue)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-blue)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0-0ea5e9)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791)
+![Vercel](https://img.shields.io/badge/Deploy-Vercel-black)
+
+
 PulseBoard is a production-style SaaS dashboard designed to showcase real-world full-stack engineering skills.  
 It includes secure email-password authentication, analytics, CRUD modules, charts, database modeling, API routes, React Query data fetching, and a scalable Next.js architecture suitable for professional SaaS applications.
 
